@@ -2,7 +2,7 @@
 using MixedContent = SiterelicDll.Models.MixedContent;
 using TimeToFirstByte = SiterelicDll.Models.TimeToFirstByte;
 using TlsScanner = SiterelicDll.Models.TlsScanner;
-
+using LoadTime = SiterelicDll.Models.LoadTime;
 
 namespace SiterelicDll;
 
@@ -40,7 +40,15 @@ public partial class Api(string domainName)
     {
         return await CallProcess<TlsScanner.Response>(EndPoint.TlsScanner, new TlsScanner.Request
         {
-            url = domainName
+            url = DomainName
         });
     }
+    public async Task<LoadTime.Response> LoadTime() =>
+        await CallProcess<LoadTime.Response>(EndPoint.LoadTime, new LoadTime.Request
+        {
+            url = DomainName,
+            followRedirect = true,
+            proxyCountry = "us"
+        });
+
 }
